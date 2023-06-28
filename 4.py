@@ -197,6 +197,7 @@ for i in range(epoch):
 
 
     bs=100
+    model.train()
     for i in range(0,len(out3),bs):
         tmp1=out3[i:i+bs]
         tmp2=out4[i:i+bs]
@@ -230,7 +231,7 @@ for i in range(epoch):
 
 
             # forward pass
-            model.train()
+            
             outputs,loss = model(**inputs,return_loss=True,label=tmp2)
 
 
@@ -238,7 +239,7 @@ for i in range(epoch):
             loss.backward()
             optimizer.step()
 #============测试一下加这个.#一般在del 变量后面使用.
-            torch.cuda.empty_cache()
+            # torch.cuda.empty_cache()
 
 
 
