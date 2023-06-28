@@ -62,7 +62,7 @@ print()
 
 
 print('开始训练')
-epoch=10
+epoch=1
 from torch import nn, optim
 # optimizer = optim.Adam(model.parameters(), lr=0.001)
 import torch.optim as optim
@@ -237,11 +237,14 @@ for i in range(epoch):
             print(loss,'当前损失')
             loss.backward()
             optimizer.step()
-
+#============测试一下加这个.#一般在del 变量后面使用.
+            torch.cuda.empty_cache()
 
 
 
 print('over_train')
+torch.save(model, 'model.pt')
+print('存完.')
 # logits_per_video = outputs.logits_per_video  # this is the video-text similarity score
 # probs = logits_per_video.softmax(dim=1)  # we can take the softmax to get the label probabilities
 # print(probs)
