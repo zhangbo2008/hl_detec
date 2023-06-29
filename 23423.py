@@ -1,0 +1,2 @@
+%%time
+print(1)

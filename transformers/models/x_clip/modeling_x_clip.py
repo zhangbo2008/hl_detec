@@ -1316,6 +1316,7 @@ class XCLIPModel(XCLIPPreTrainedModel):
 
         self.prompts_generator = XCLIPPromptGenerator(config)
         self.last = nn.Linear(self.text_embed_dim, 1, bias=True)
+        self.last2 = nn.Linear(self.text_embed_dim, 5, bias=True)
         # Initialize weights and apply final processing
         self.post_init()
 
@@ -1484,7 +1485,7 @@ class XCLIPModel(XCLIPPreTrainedModel):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
-        label=None,
+        label=None,fenlei=None,
     ) -> Union[Tuple, XCLIPOutput]:
         r"""
         Returns:
@@ -1590,13 +1591,22 @@ class XCLIPModel(XCLIPPreTrainedModel):
             return_dict=return_dict,
         )
         video_embeds = mit_outputs[1]
-
+        if fenlei==1:
+            ans=self.last2(video_embeds)
+            label = torch.tensor(label)
+            ans = ans.to(torch.float32)
+            loss=nn.CrossEntropyLoss()(ans,(label))
+            return ans,loss
         video_embeds=self.last(video_embeds)
         #return 返回结果.
+
+
+
+
         ans=nn.Sigmoid()(video_embeds) # 变换到0-1之间.然后我们做mse
         label = torch.tensor(label).to(torch.float32)
         ans = ans.to(torch.float32)
-        loss=nn.MSELoss()(ans,torch.tensor(label).reshape(-1,1))
+        loss=nn.MSELoss()(ans,(label).reshape(-1,1))
         return ans,loss
 
 
