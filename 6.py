@@ -81,6 +81,8 @@ for p in model.parameters():
 
 for p in model.base_model.last.parameters():
     p.requires_grad=True
+for p in model.base_model.last2.parameters():
+    p.requires_grad=True
 print()
 
 
@@ -192,7 +194,7 @@ for i in range(epoch):
 
 
     #-=----to int
-    out4=[int(i+0.5) for i in out4]
+    out4=[int(i+0.5)-1 for i in out4]
     print()
     # all_video.append(out3)
     # all_label.append(out4)
@@ -251,7 +253,7 @@ for i in range(epoch):
             outputs,loss = model(**inputs,return_loss=True,label=tmp2,fenlei=1)
 
 
-
+ 
             loss.backward()
             print(loss.item(),'当前损失')
             print(optimizer.param_groups[0]["lr"],'当前学习率')
