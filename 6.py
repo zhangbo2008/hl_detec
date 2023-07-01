@@ -83,6 +83,8 @@ for p in model.base_model.last.parameters():
     p.requires_grad=True
 for p in model.base_model.last2.parameters():
     p.requires_grad=True
+for p in model.base_model.last3.parameters():
+    p.requires_grad=True
 print()
 
 
@@ -221,7 +223,7 @@ for i in range(epoch):
         tmp2=out4[i:i+bs]
 
 
-        for jj in range(5):
+        for jj in range(20):
             optimizer.zero_grad()
             
             video=tmp1

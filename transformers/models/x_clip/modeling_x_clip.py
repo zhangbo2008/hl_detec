@@ -1317,6 +1317,7 @@ class XCLIPModel(XCLIPPreTrainedModel):
         self.prompts_generator = XCLIPPromptGenerator(config)
         self.last = nn.Linear(self.text_embed_dim, 1, bias=True)
         self.last2 = nn.Linear(self.text_embed_dim, 5, bias=True)
+        self.last3 = nn.Linear(self.text_embed_dim, self.text_embed_dim, bias=True)
         # Initialize weights and apply final processing
         self.post_init()
 
@@ -1592,6 +1593,10 @@ class XCLIPModel(XCLIPPreTrainedModel):
         )
         video_embeds = mit_outputs[1]
         if fenlei==1:
+
+
+
+            video_embeds=self.last3(video_embeds)
             ans=self.last2(video_embeds)
             label = torch.tensor(label)
             ans = ans.to(torch.float32)
